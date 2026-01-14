@@ -16,14 +16,14 @@ async function vercelFetch(endpoint: string, options: RequestInit = {}) {
     throw new Error(`Vercel API error: ${error}`);
   }
 
-  return response.json();
+  return response.json() as Promise<any>;
 }
 
 export async function vercelDeploy(args: any) {
   try {
     const { projectId, gitSource } = args;
     
-    const data = await vercelFetch('/v13/deployments', {
+    const data: any = await vercelFetch('/v13/deployments', {
       method: 'POST',
       body: JSON.stringify({
         projectId,
@@ -53,7 +53,7 @@ export async function vercelGetDeployment(args: any) {
   try {
     const { deploymentId } = args;
     
-    const data = await vercelFetch(`/v13/deployments/${deploymentId}`);
+    const data: any = await vercelFetch(`/v13/deployments/${deploymentId}`);
 
     return {
       content: [
@@ -79,7 +79,7 @@ export async function vercelListProjects(args: any) {
   try {
     const { limit = 20 } = args;
     
-    const data = await vercelFetch(`/v9/projects?limit=${limit}`);
+    const data: any = await vercelFetch(`/v9/projects?limit=${limit}`);
 
     const projects = data.projects.map((p: any) => ({
       id: p.id,
